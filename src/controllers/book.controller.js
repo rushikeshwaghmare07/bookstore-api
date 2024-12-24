@@ -126,9 +126,55 @@ const deleteBookById = async (req, res) => {
   }
 };
 
+const updateBookById = async (req, res) => {
+  const { id: bookId } = req.params;
+  const bookData = req.body;
+
+  if (!mongoose.isValidObjectId(bookId)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid book ID format.",
+    });
+  }
+
+  if (!bookData || Object.keys(bookData).length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "No data provided for updating the book.",
+    });
+  }
+
+  try {
+    const updateBook = await Book.findByIdAndUpdate(bookId, bookData, {
+      new: true,
+    });
+
+    if (!updateBook) {
+      return res.status(404).json({
+        success: false,
+        message: "Book not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: updateBook,
+      message: "Book updated successfully.",
+    });
+  } catch (error) {
+    console.error("Error in updateBookById controller:", error.message);
+    return res.status(500).json({
+      success: false,
+      message:
+        "An error occurred while updating the book. Please try again later.",
+    });
+  }
+};
+
 module.exports = {
   addBook,
   getAllBooks,
   getBookById,
   deleteBookById,
+  updateBookById,
 };
