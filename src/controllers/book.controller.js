@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Book = require("../models/book.model.js");
 
 const addBook = async (req, res) => {
@@ -56,7 +57,42 @@ const getAllBooks = async (req, res) => {
   }
 };
 
+const getBookById = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.isValidObjectId(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid book ID format.",
+    });
+  }
+
+  try {
+    const book = await Book.findById(id);
+
+    if (!book) {
+      return res.status(404).json({
+        success: false,
+        message: "Book not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: book,
+      message: "Book retrieved successfully",
+    });
+  } catch (error) {
+    console.error("Error in getBookById controller:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while fetching the book. Please try again later.",
+    });
+  }
+};
+
 module.exports = {
   addBook,
   getAllBooks,
+  getBookById,
 };
