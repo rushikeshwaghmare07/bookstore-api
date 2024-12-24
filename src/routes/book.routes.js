@@ -10,6 +10,6 @@ router.route("/add").post(addBook);
 router.route("/get-all").get(getAllBooks);
 
 // get book by id
-router.route("/get/:id").get(getBookById);
+router.route("/:id").get(getBookById);
 
 module.exports = router;
