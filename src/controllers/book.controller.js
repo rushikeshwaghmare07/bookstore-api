@@ -30,6 +30,33 @@ const addBook = async (req, res) => {
   }
 };
 
+const getAllBooks = async (req, res) => {
+  try {
+    const books = await Book.find({});
+
+    if (books.length === 0) {
+      return res.status(200).json({
+        success: true,
+        date: [],
+        message: "No books available in the database.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: books,
+      message: "All books retrieved successfully.",
+    });
+  } catch (error) {
+    console.error("Error in getAllBook controller:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch books. Please try again later.",
+    });
+  }
+};
+
 module.exports = {
   addBook,
+  getAllBooks,
 };
