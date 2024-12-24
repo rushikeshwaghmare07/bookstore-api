@@ -210,3 +210,86 @@ This API retrieves a single book from the application’s book collection based 
 - Use the response codes to differentiate between client-side input issues `(400/404)` and server-side issues `(500)`.
 
 ---
+
+## **Delete Book by ID** -
+
+### Overview
+
+This API allows you to delete a specific book from the application’s book collection using its unique ID.
+
+---
+
+### Endpoints
+
+- ### URL: `/api/books/:id`
+- ### Method: `DELETE`
+
+---
+
+### Request Body:
+
+- id (string, required):
+  The unique identifier of the book to be retrieved. Must be a valid MongoDB ObjectId.
+
+---
+
+### Example Response:
+
+- **Success (200) - Body (JSON):**
+  ```json
+  {
+    "success": true,
+    "message": "Book deleted successfully."
+  }
+  ```
+---
+- **Error Response (400)**
+
+  Occurs when the id provided is not a valid MongoDB ObjectId format:
+  ```json
+  {
+    "success": false,
+    "message": "Invalid book ID format."
+  }
+  ```
+---
+
+- **Error Response (404)**
+
+  Occurs when no book is found for the provided id:
+  ```json
+  {
+    "success": false,
+    "message": "Book not found."
+  }
+  ```
+---
+
+- **Error Response (500)**
+
+  Occurs when there is a server-side issue during processing:
+  ```json
+  {
+    "success": false,
+    "message": "An error occurred while deleting the book. Please try again later."
+  }
+
+  ```
+---
+
+### **Error Handling**
+
+- **Invalid ID Format:** A 400 status code is returned if the provided id is not in a valid MongoDB ObjectId format.
+
+- **Book Not Found:** A 404 status code is returned if no book exists for the provided id.
+
+- **Server Error:** A 500 status code is returned if there is a server issue.
+
+
+---
+
+## Notes
+
+- Ensure the id parameter is passed correctly in the URL and follows the MongoDB ObjectId format.
+
+---
