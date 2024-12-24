@@ -293,3 +293,136 @@ This API allows you to delete a specific book from the application’s book coll
 - Ensure the id parameter is passed correctly in the URL and follows the MongoDB ObjectId format.
 
 ---
+## **Update Book by ID** -
+
+### Overview
+
+This API handles the updating of an existing book's details in the application’s book collection.
+
+---
+
+### Endpoints
+
+- ### URL: `/api/books/:id`
+- ### Method: `PUT`
+
+---
+
+### Request Parameter:
+
+- id (string, required):
+  The unique identifier of the book to be retrieved. Must be a valid MongoDB ObjectId.
+
+---
+
+### Request Body:
+
+The request body should be in JSON format and include one or more of the following fields to update:
+
+- `title` (string, optional): The new title of the book. Cannot exceed 100 characters.
+
+- `author` (string, optional): The new author name.
+
+- `year` (number, optional): The updated year of the book.
+
+***Note***: At least one field must be provided in the request body.
+
+---
+
+### Example Request:
+
+- **URL:**
+- `/api/books/update/64e456f8fcd49300126c9abc
+`
+
+- **Body:**
+
+  ```json
+  {
+    "title": "Refactoring",
+    "author": "Martin Fowler",
+    "year": 2018
+  }
+  ```
+---
+
+### Example Response:
+
+- **Success (200):**
+
+  ```json
+  {
+    "success": true,
+    "data": {
+      "_id": "64e456f8fcd49300126c9abc",
+      "title": "Refactoring",
+      "author": "Martin Fowler",
+      "year": 2018,
+      "createdAt": "2023-12-24T14:52:18.255Z",
+      "updatedAt": "2023-12-25T10:00:00.000Z"
+    },
+    "message": "Book updated successfully."
+  }
+  ```
+---
+
+- **Error (400) - Invalid Book ID Format:**
+
+  ```json
+  {
+    "success": false,
+    "message": "Invalid book ID format."
+  }
+  ```
+---
+
+- **Error (400) - No Data Provided:**
+
+  ```json
+  {
+    "success": false,
+    "message": "No data provided for updating the book."
+  }
+  ```
+---
+
+- **Error (404) - Book Not Found:**
+
+  ```json
+  {
+    "success": false,
+    "message": "Book not found."
+  }
+  ```
+---
+
+- **Error (500):**
+
+  ```json
+  {
+    "success": false,
+    "message": "An error occurred while updating the book. Please try again later."
+  }
+  ```
+---
+
+### **Error Handling**
+
+- **Invalid ID Format:** If the id parameter is not a valid MongoDB ObjectId, a 400 error is returned.
+
+- **No Data in Request Body:** If the request body does not contain any valid fields to update, a 400 error is returned.
+
+- **Book Not Found:** If the book ID does not exist in the database, a 404 error is returned.
+
+- **Server Errors:** For any unexpected errors, a 500 status is returned with a relevant message.
+
+---
+
+## Notes
+
+- The `id` parameter must be a valid MongoDB ObjectId. Ensure the client validates this before making a request.
+
+- The response will include the updated book data if the operation is successful.
+
+- Only the fields provided in the request body will be updated. Fields not included will remain unchanged.
+---
